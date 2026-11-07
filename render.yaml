@@ -1,0 +1,29 @@
+
+services:
+  - type: worker
+    name: discord-key-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    disk:
+      name: bot-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: DB_PATH
+        value: /var/data/keys.db
+
+  - type: web
+    name: key-verification-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn api:app
+    disk:
+      name: api-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DB_PATH
+        value: /var/data/keys.db
