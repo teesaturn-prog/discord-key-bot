@@ -1,4 +1,3 @@
-
 import sqlite3
 import secrets
 import time
@@ -48,7 +47,4 @@ def verify_key(key, discord_id):
         return False
 
     owner, expiry = result
-
     return owner == str(discord_id) and time.time() < expiry
-
-setup()
